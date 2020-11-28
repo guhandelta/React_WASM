@@ -1,39 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
+
 import './App.css';
 
+const ffmpeg = createFFmpeg({ log: true }); // Prints everythin that it does, on teh console
 function App() {
-  // Create the count state.
-  const [count, setCount] = useState(0);
-  // Create the counter (+1 every second).
-  useEffect(() => {
-    const timer = setTimeout(() => setCount(count + 1), 1000);
-    return () => clearTimeout(timer);
-  }, [count, setCount]);
-  // Return the App component.
-  return (
+  
+  // The web assembly binary has not been bundled in the app yet 
+  // It will be loaded async, to make sure it does not block the app, as it a huge file
+
+  // Creating a state var to keep track of loading the binary file. It will ne loaded async over a CDN
+  const [ ready, setReady ] = useState(false);
+
+  const loadBinary = async () =>{
+    await ffmpeg.load();
+    setReady(true);
+  }
+
+  useEffect(() =>{
+    loadBinary();
+  }, []); // fn() called only once | componentDidMount
+
+  return ready ? (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.jsx</code> and save to reload.
-        </p>
-        <p>
-          Page has been open for <code>{count}</code> seconds.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+      
     </div>
-  );
+  ):
+  (<p>Loading...</p>);
 }
 
 export default App;

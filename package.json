@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "@ffmpeg/core": "^0.8.3",
+    "@ffmpeg/ffmpeg": "^0.9.4"
   },
   "devDependencies": {
     "@snowpack/plugin-dotenv": "^2.0.4",
