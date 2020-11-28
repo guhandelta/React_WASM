@@ -11,6 +11,7 @@ function App() {
 
   // Creating a state var to keep track of loading the binary file. It will ne loaded async over a CDN
   const [ ready, setReady ] = useState(false);
+  const [ video, setVideo ] = useState(); //Initial Valu undefined
 
   const loadBinary = async () =>{
     await ffmpeg.load();
@@ -23,7 +24,23 @@ function App() {
 
   return ready ? (
     <div className="App">
-      
+
+      {video && <video 
+                  controls //video element controls
+                  width="250"
+                  /* The video can't be passed to the src attribute, so it needs to be converted to a URL-
+                  - that the browser can fetch => URL.createObjectURL() */
+                  src={URL.createObjectURL(video)}
+                >
+
+                </video>
+      }
+      <br/>
+      <input 
+        type="file" 
+        onChange={e=>setVideo(e.target.files ?. item(0))}
+        // EventHandler ger the actual file from the event which returns a list of files, and pick out the 1st one
+      />
     </div>
   ):
   (<p>Loading...</p>);
